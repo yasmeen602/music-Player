@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Music Player</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        #audio-player {
+            width: 100%;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #song-title{
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 id="song-title">Select a Song</h2>
+    <input type="file" id="file-input" accept="audio/*">
+    <audio id="audio-player" controls></audio>
+    <div id="controls">
+        <button id="play-btn">Play</button>
+        <button id="pause-btn">Pause</button>
+    </div>
+</div>
+
+<script>
+    const audioPlayer = document.getElementById('audio-player');
+    const fileInput = document.getElementById('file-input');
+    const playBtn = document.getElementById('play-btn');
+    const pauseBtn = document.getElementById('pause-btn');
+    const songTitle = document.getElementById('song-title');
+
+    let currentFile;
+
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            currentFile = file;
+            const objectURL = URL.createObjectURL(file);
+            audioPlayer.src = objectURL;
+            songTitle.textContent = file.name;
+        }
+    });
+
+    playBtn.addEventListener('click', () => {
+        if (currentFile) {
+            audioPlayer.play();
+        }
+    });
+
+    pauseBtn.addEventListener('click', () => {
+        if (currentFile) {
+            audioPlayer.pause();
+        }
+    });
+
+    audioPlayer.addEventListener('ended', () => { //Optional: Reset after song finishes
+        audioPlayer.currentTime = 0;
+        playBtn.textContent = "Play"; // reset button text as well
+    });
+
+</script>
+
+</body>
+</html>
